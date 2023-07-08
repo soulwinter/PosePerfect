@@ -14,8 +14,6 @@ struct LoginView: View {
     @State private var showingAlert = false
     @State private var alertContent = ""
     
-    
-    
     var body: some View {
         
         // Set background
@@ -100,13 +98,14 @@ struct LoginView: View {
                                     .foregroundColor(.white)
                                     .frame(minWidth: 90)
                                     .padding(.vertical, 10)
-                                    .background(Color.blue)
+                                    .background(isValidPhoneNumber(phoneNumber) ? Color.blue : Color.gray)
                                     .cornerRadius(10)
                                     .font(.callout)
                             }
                             .alert(alertContent, isPresented: $showingAlert) {
                                 Button("OK", role: .cancel) { }
                             }
+                            .disabled(!isValidPhoneNumber(phoneNumber))
                             
                         }
                         Spacer()
@@ -137,6 +136,7 @@ struct LoginView: View {
                         .alert(alertContent, isPresented: $showingAlert) {
                             Button("OK", role: .cancel) { }
                         }
+                        .disabled(phoneNumber == "" || verificationCode == "")
                         Spacer()
                             .frame(height: 100)
                         
@@ -152,6 +152,13 @@ struct LoginView: View {
             
             
         }
+    }
+    
+    // 判断手机号是否可用
+    func isValidPhoneNumber(_ phoneNumber: String) -> Bool {
+        let phoneNumberPattern = "^1[3-9]\\d{9}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", phoneNumberPattern)
+        return predicate.evaluate(with: phoneNumber)
     }
 }
 
