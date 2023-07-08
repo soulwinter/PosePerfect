@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */; };
+		8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD22A56F1F1006AAF20 /* Constants.swift */; };
 		8AE1B7C52A569641005F5F8D /* PosePerfectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE1B7C42A569641005F5F8D /* PosePerfectApp.swift */; };
 		8AE1B7C72A569641005F5F8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE1B7C62A569641005F5F8D /* ContentView.swift */; };
 		8AE1B7C92A569643005F5F8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AE1B7C82A569643005F5F8D /* Assets.xcassets */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		8AE12CD22A56F1F1006AAF20 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8AE1B7C12A569641005F5F8D /* PosePerfect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PosePerfect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE1B7C42A569641005F5F8D /* PosePerfectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePerfectApp.swift; sourceTree = "<group>"; };
 		8AE1B7C62A569641005F5F8D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				8AE1B7F22A569837005F5F8D /* Color.swift */,
+				8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */,
+				8AE12CD22A56F1F1006AAF20 /* Constants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -281,8 +287,10 @@
 			files = (
 				8AE1B7F02A569783005F5F8D /* LoginView.swift in Sources */,
 				8AE1B7F32A569837005F5F8D /* Color.swift in Sources */,
+				8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */,
 				8AE1B7C72A569641005F5F8D /* ContentView.swift in Sources */,
 				8AE1B7C52A569641005F5F8D /* PosePerfectApp.swift in Sources */,
+				8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
