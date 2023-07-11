@@ -36,10 +36,7 @@ struct LoginView: View {
                     .foregroundColor(Color.white)
                 
                 // TODO: the views should be moved up when the keyboard is active
-                
-                //                Spacer()
-                //                    .frame(height: 350)
-                
+            
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 25.0)

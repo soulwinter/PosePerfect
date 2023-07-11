@@ -7,8 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8AB728192A5C1DAF002F019C /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728182A5C1DAF002F019C /* CameraViewController.swift */; };
+		8AB7281B2A5C1DC6002F019C /* CameraViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB7281A2A5C1DC6002F019C /* CameraViewWrapper.swift */; };
+		8AB7281D2A5C1DDE002F019C /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB7281C2A5C1DDE002F019C /* CameraView.swift */; };
+		8AB7281F2A5C1E2F002F019C /* PoseEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */; };
+		8AB728212A5C1E45002F019C /* StickFigureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728202A5C1E45002F019C /* StickFigureView.swift */; };
+		8AB728232A5C2540002F019C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728222A5C2540002F019C /* Data.swift */; };
 		8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */; };
 		8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD22A56F1F1006AAF20 /* Constants.swift */; };
+		8AE12CD52A593F81006AAF20 /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD42A593F81006AAF20 /* DetectionView.swift */; };
 		8AE1B7C52A569641005F5F8D /* PosePerfectApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE1B7C42A569641005F5F8D /* PosePerfectApp.swift */; };
 		8AE1B7C72A569641005F5F8D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE1B7C62A569641005F5F8D /* ContentView.swift */; };
 		8AE1B7C92A569643005F5F8D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AE1B7C82A569643005F5F8D /* Assets.xcassets */; };
@@ -38,8 +45,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8AB728182A5C1DAF002F019C /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		8AB7281A2A5C1DC6002F019C /* CameraViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewWrapper.swift; sourceTree = "<group>"; };
+		8AB7281C2A5C1DDE002F019C /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseEstimator.swift; sourceTree = "<group>"; };
+		8AB728202A5C1E45002F019C /* StickFigureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickFigureView.swift; sourceTree = "<group>"; };
+		8AB728222A5C2540002F019C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8AE12CD22A56F1F1006AAF20 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		8AE12CD42A593F81006AAF20 /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
 		8AE1B7C12A569641005F5F8D /* PosePerfect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PosePerfect.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE1B7C42A569641005F5F8D /* PosePerfectApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePerfectApp.swift; sourceTree = "<group>"; };
 		8AE1B7C62A569641005F5F8D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -79,6 +93,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8AB728172A5C1D4E002F019C /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				8AB728182A5C1DAF002F019C /* CameraViewController.swift */,
+				8AB7281A2A5C1DC6002F019C /* CameraViewWrapper.swift */,
+				8AB7281C2A5C1DDE002F019C /* CameraView.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		8AE1B7B82A569641005F5F8D = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +126,9 @@
 		8AE1B7C32A569641005F5F8D /* PosePerfect */ = {
 			isa = PBXGroup;
 			children = (
+				8AB728222A5C2540002F019C /* Data.swift */,
+				8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */,
+				8AB728172A5C1D4E002F019C /* Camera */,
 				8AE1B7F12A5697F2005F5F8D /* Utils */,
 				8AE1B7EE2A569772005F5F8D /* Views */,
 				8AE1B7C42A569641005F5F8D /* PosePerfectApp.swift */,
@@ -141,6 +168,8 @@
 			isa = PBXGroup;
 			children = (
 				8AE1B7EF2A569783005F5F8D /* LoginView.swift */,
+				8AE12CD42A593F81006AAF20 /* DetectionView.swift */,
+				8AB728202A5C1E45002F019C /* StickFigureView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -286,9 +315,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AE1B7F02A569783005F5F8D /* LoginView.swift in Sources */,
+				8AE12CD52A593F81006AAF20 /* DetectionView.swift in Sources */,
+				8AB7281B2A5C1DC6002F019C /* CameraViewWrapper.swift in Sources */,
+				8AB7281F2A5C1E2F002F019C /* PoseEstimator.swift in Sources */,
+				8AB7281D2A5C1DDE002F019C /* CameraView.swift in Sources */,
 				8AE1B7F32A569837005F5F8D /* Color.swift in Sources */,
 				8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */,
+				8AB728212A5C1E45002F019C /* StickFigureView.swift in Sources */,
+				8AB728232A5C2540002F019C /* Data.swift in Sources */,
 				8AE1B7C72A569641005F5F8D /* ContentView.swift in Sources */,
+				8AB728192A5C1DAF002F019C /* CameraViewController.swift in Sources */,
 				8AE1B7C52A569641005F5F8D /* PosePerfectApp.swift in Sources */,
 				8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */,
 			);
@@ -452,6 +488,7 @@
 				DEVELOPMENT_TEAM = YR2LEP366G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "我们将使用相机进行动作捕捉。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -481,6 +518,7 @@
 				DEVELOPMENT_TEAM = YR2LEP366G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "我们将使用相机进行动作捕捉。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
