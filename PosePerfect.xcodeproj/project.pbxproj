@@ -55,6 +55,7 @@
 		8AB728222A5C2540002F019C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		8AB728262A5E8111002F019C /* DataCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCalculator.swift; sourceTree = "<group>"; };
 		8AB728282A5EE662002F019C /* TransferData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferData.swift; sourceTree = "<group>"; };
+		8AB7282A2A5EEF4D002F019C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8AE12CD22A56F1F1006AAF20 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8AE12CD42A593F81006AAF20 /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
@@ -110,6 +111,7 @@
 		8AE1B7B82A569641005F5F8D = {
 			isa = PBXGroup;
 			children = (
+				8AB7282A2A5EEF4D002F019C /* README.md */,
 				8AE1B7C32A569641005F5F8D /* PosePerfect */,
 				8AE1B7D42A569643005F5F8D /* PosePerfectTests */,
 				8AE1B7DE2A569643005F5F8D /* PosePerfectUITests */,
