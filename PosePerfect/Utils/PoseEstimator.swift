@@ -9,18 +9,32 @@ import Foundation
 import AVFoundation
 import Vision
 import Combine
+import CoreMotion
 
 class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, ObservableObject {
     let sequenceHandler = VNSequenceRequestHandler()
     @Published var bodyParts = [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]()
-    var wasInBottomPosition = false
 
-    @Published var isGoodPosture = true
-    @Published var poseAngleDifferences: [ConnectedJoints : CGFloat] = [:]
-    @Published var poseScore: CGFloat = 0
-    
     // 用于判断标准的姿势
     @Published var standardPose: Pose?
+   
+    
+    // 耳机数据
+    let APP = CMHeadphoneMotionManager()
+    @Published var motionData: CMDeviceMotion?
+    @Published var AirPodsStatus: Int = 0
+    //  0: 正在寻找 AirPods
+    //  1: 状态录制中
+    // -1: 不支持此设备
+    //  2: 停止
+    
+    // 计算分数
+    // 姿势的差距
+    @Published var poseAngleDifferences: [ConnectedJoints : CGFloat] = [:]
+    // 耳机分数
+    @Published var AirPodsDifferences: AirPodsInfo?
+    // 总分数
+    @Published var poseScore: CGFloat = 0
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -44,6 +58,7 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
           print(error.localizedDescription)
         }
     }
+
     func detectedBodyPose(request: VNRequest, error: Error?) {
         guard let bodyPoseResults = request.results as? [VNHumanBodyPoseObservation]
           else { return }
@@ -53,19 +68,43 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
         }
     }
     
+    
+    
     func estimateDance(bodyParts: [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]) {
         
-        let currentPose = Pose(time: 0, bodyParts: bodyParts)
+        let currentPose = Pose(time: 0, bodyParts: bodyParts, AirPodsMotion: motionData)
         // poseAngleDifferences = calculateAngleDifferences(pose1: currentPose, pose2: standardPose ?? currentPose)
         // 此版本计算的是分数，但是还有诸多问题
-        poseAngleDifferences = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
+        (poseAngleDifferences,AirPodsDifferences) = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
+       
         var total: CGFloat = 0
         for (_, value) in poseAngleDifferences {
             total += value
         }
         poseScore = total / CGFloat(poseAngleDifferences.count)
-    
         
     }
+    
+    // 耳机开始探测
+    func startAirPodsUpdates() {
+        guard APP.isDeviceMotionAvailable else {
+            AirPodsStatus = -1
+            return
+        }
+        
+        APP.startDeviceMotionUpdates(to: OperationQueue.current!) { [weak self] (motion, error) in
+            guard let motion = motion, error == nil
+                else { return }
+            self?.motionData = motion
+            self?.AirPodsStatus = 1
+        }
+    }
+    
+    // 耳机停止探测
+    func stopAirPodsUpdates() {
+        APP.stopDeviceMotionUpdates()
+    }
+    
+    
 
 }

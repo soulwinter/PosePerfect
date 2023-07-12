@@ -7,23 +7,23 @@
 
 import Foundation
 import Vision
-
+import CoreMotion
 
 // Create a new pose: let pose = Pose(time: currentTime, bodyParts: poseEstimator.bodyParts)
 struct Pose {
     var time: Float
-
+    
     // 面部
     var nose: CGPoint
     var rightEye: CGPoint
     var leftEye: CGPoint
     var rightEar: CGPoint
     var leftEar: CGPoint
-
+    
     // 中间
     var neck: CGPoint
     var root: CGPoint
-
+    
     // 右边
     var rightElbow: CGPoint
     var rightWrist: CGPoint
@@ -31,7 +31,7 @@ struct Pose {
     var rightHip: CGPoint
     var rightKnee: CGPoint
     var rightAnkle: CGPoint
-
+    
     // 左边
     var leftElbow: CGPoint
     var leftWrist: CGPoint
@@ -39,21 +39,25 @@ struct Pose {
     var leftHip: CGPoint
     var leftKnee: CGPoint
     var leftAnkle: CGPoint
-
-    init(time: Float, bodyParts: [VNHumanBodyPoseObservation.JointName: VNRecognizedPoint]) {
+    
+    // 耳机数据
+    var AirPodsAvailable: Bool
+    var AirPodsMotion: CMDeviceMotion?
+    
+    init(time: Float, bodyParts: [VNHumanBodyPoseObservation.JointName: VNRecognizedPoint], AirPodsMotion: CMDeviceMotion?) {
         self.time = time
-
+        
         // 面部
         self.nose = bodyParts[.nose]?.location ?? CGPoint.zero
         self.rightEye = bodyParts[.rightEye]?.location ?? CGPoint.zero
         self.leftEye = bodyParts[.leftEye]?.location ?? CGPoint.zero
         self.rightEar = bodyParts[.rightEar]?.location ?? CGPoint.zero
         self.leftEar = bodyParts[.leftEar]?.location ?? CGPoint.zero
-
+        
         // 中间
         self.neck = bodyParts[.neck]?.location ?? CGPoint.zero
         self.root = bodyParts[.root]?.location ?? CGPoint.zero
-
+        
         // 右边
         self.rightElbow = bodyParts[.rightElbow]?.location ?? CGPoint.zero
         self.rightWrist = bodyParts[.rightWrist]?.location ?? CGPoint.zero
@@ -61,7 +65,7 @@ struct Pose {
         self.rightHip = bodyParts[.rightHip]?.location ?? CGPoint.zero
         self.rightKnee = bodyParts[.rightKnee]?.location ?? CGPoint.zero
         self.rightAnkle = bodyParts[.rightAnkle]?.location ?? CGPoint.zero
-
+        
         // 左边
         self.leftElbow = bodyParts[.leftElbow]?.location ?? CGPoint.zero
         self.leftWrist = bodyParts[.leftWrist]?.location ?? CGPoint.zero
@@ -69,9 +73,20 @@ struct Pose {
         self.leftHip = bodyParts[.leftHip]?.location ?? CGPoint.zero
         self.leftKnee = bodyParts[.leftKnee]?.location ?? CGPoint.zero
         self.leftAnkle = bodyParts[.leftAnkle]?.location ?? CGPoint.zero
+        
+        self.AirPodsAvailable = (AirPodsMotion != nil) ? true : false
+        self.AirPodsMotion = AirPodsMotion
     }
-
+    
 }
+
+
+
+
+
+
+
+
 
 enum ConnectedJoints: CaseIterable {
     case leftArm, rightArm, leftLeg, rightLeg, leftBodyAngle, rightBodyAngle, hipAngle, leftUpperLimb, rightUpperLimb
@@ -99,9 +114,6 @@ enum ConnectedJoints: CaseIterable {
             
         }
         
-        
-        
-        
     }
 }
 
@@ -117,12 +129,35 @@ func angleBetweenThreePoints(center: CGPoint, point1: CGPoint, point2: CGPoint) 
     return atan2(crossProduct, dotProduct)
 }
 
-// angleDifference 函数计算两个角度的差，它使用的是在圆上测量角度的方法，考虑到了角度可能超过 360 度的情况
-func angleDifference(angle1: CGFloat, angle2: CGFloat) -> CGFloat {
-    return atan2(sin(angle2 - angle1), cos(angle2 - angle1))
+
+
+
+
+// 计算耳机的姿态角度
+func AirPodsPoseDifference(pose1Motion: CMDeviceMotion, pose2Motion: CMDeviceMotion) -> AirPodsInfo
+{
+    // 获取两个姿态的四元数
+    let quaternion1 = pose1Motion.attitude.quaternion
+    let quaternion2 = pose2Motion.attitude.quaternion
+    
+    // 计算两个四元数之间的角度差异
+//    let angleDifference = cosineSimilarityBetween(quaternion1, quaternion2)
+    let directionDifference = quaternionToEulerAngles(quaternion: quaternionBetween(quaternion1, quaternion2)) // 从 pose 1 到 2 需要的角度转变
+    
+    let userAccelerationDifference = differenceAcceleration(vector1: pose1Motion.userAcceleration, vector2: pose2Motion.userAcceleration)
+
+    
+    return AirPodsInfo(directionX: directionDifference.0,
+                       directionY: directionDifference.1,
+                       directionZ: directionDifference.2,
+                       accelerationDifference: userAccelerationDifference)
 }
 
-func calculatePoseScore(pose1: Pose, pose2: Pose) -> [ConnectedJoints : CGFloat] {
+
+
+
+// 计算姿态的评分，目前默认耳机必须使用，否则不会开始
+func calculatePoseScore(pose1: Pose, pose2: Pose) -> ([ConnectedJoints : CGFloat], AirPodsInfo) {
     var differences = [ConnectedJoints : CGFloat]()
     for group in connectedJointsGroups {
         let points1 = group.points(for: pose1)
@@ -132,13 +167,19 @@ func calculatePoseScore(pose1: Pose, pose2: Pose) -> [ConnectedJoints : CGFloat]
         let angle1 = angleBetweenThreePoints(center: points1.1, point1: points1.0, point2: points1.2)
         let angle2 = angleBetweenThreePoints(center: points2.1, point1: points2.0, point2: points2.2)
         
-        differences[group] = (3.1415926 - abs(angleDifference(angle1: angle1, angle2: angle2))) / (3.1415926)
-    }
-    return differences
+        differences[group] = (.pi - abs(angleDifference(angle1: angle1, angle2: angle2))) / .pi
         
-}
+        if pose1.AirPodsAvailable && pose2.AirPodsAvailable {
+            // 如果耳机可用，则进行判断
+            
+        }
+    }
+    return (differences, AirPodsPoseDifference(pose1Motion: pose1.AirPodsMotion!, pose2Motion: pose2.AirPodsMotion!))
     
+}
 
+
+// 计算角度的差异
 func calculateAngleDifferences(pose1: Pose, pose2: Pose) -> [ConnectedJoints : CGFloat] {
     var differences = [ConnectedJoints : CGFloat]()
     for group in connectedJointsGroups {
@@ -149,15 +190,6 @@ func calculateAngleDifferences(pose1: Pose, pose2: Pose) -> [ConnectedJoints : C
         let angle1 = angleBetweenThreePoints(center: points1.1, point1: points1.0, point2: points1.2)
         let angle2 = angleBetweenThreePoints(center: points2.1, point1: points2.0, point2: points2.2)
         differences[group] = angleDifference(angle1: angle1, angle2: angle2)
-        
-//        if group == .bodyAngle {
-//            print(points1)
-//            print(points2)
-//            print(angle1)
-//            print(angle2)
-//            print(differences[group])
-//        }
-        
         
     }
     return differences

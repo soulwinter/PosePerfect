@@ -13,6 +13,8 @@
 		8AB7281F2A5C1E2F002F019C /* PoseEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */; };
 		8AB728212A5C1E45002F019C /* StickFigureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728202A5C1E45002F019C /* StickFigureView.swift */; };
 		8AB728232A5C2540002F019C /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728222A5C2540002F019C /* Data.swift */; };
+		8AB728272A5E8111002F019C /* DataCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728262A5E8111002F019C /* DataCalculator.swift */; };
+		8AB728292A5EE662002F019C /* TransferData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728282A5EE662002F019C /* TransferData.swift */; };
 		8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */; };
 		8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD22A56F1F1006AAF20 /* Constants.swift */; };
 		8AE12CD52A593F81006AAF20 /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD42A593F81006AAF20 /* DetectionView.swift */; };
@@ -51,6 +53,8 @@
 		8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseEstimator.swift; sourceTree = "<group>"; };
 		8AB728202A5C1E45002F019C /* StickFigureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StickFigureView.swift; sourceTree = "<group>"; };
 		8AB728222A5C2540002F019C /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
+		8AB728262A5E8111002F019C /* DataCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCalculator.swift; sourceTree = "<group>"; };
+		8AB728282A5EE662002F019C /* TransferData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferData.swift; sourceTree = "<group>"; };
 		8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8AE12CD22A56F1F1006AAF20 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8AE12CD42A593F81006AAF20 /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
@@ -126,8 +130,6 @@
 		8AE1B7C32A569641005F5F8D /* PosePerfect */ = {
 			isa = PBXGroup;
 			children = (
-				8AB728222A5C2540002F019C /* Data.swift */,
-				8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */,
 				8AB728172A5C1D4E002F019C /* Camera */,
 				8AE1B7F12A5697F2005F5F8D /* Utils */,
 				8AE1B7EE2A569772005F5F8D /* Views */,
@@ -177,9 +179,13 @@
 		8AE1B7F12A5697F2005F5F8D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				8AB7281E2A5C1E2F002F019C /* PoseEstimator.swift */,
+				8AB728222A5C2540002F019C /* Data.swift */,
 				8AE1B7F22A569837005F5F8D /* Color.swift */,
 				8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */,
 				8AE12CD22A56F1F1006AAF20 /* Constants.swift */,
+				8AB728262A5E8111002F019C /* DataCalculator.swift */,
+				8AB728282A5EE662002F019C /* TransferData.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -317,6 +323,8 @@
 				8AE1B7F02A569783005F5F8D /* LoginView.swift in Sources */,
 				8AE12CD52A593F81006AAF20 /* DetectionView.swift in Sources */,
 				8AB7281B2A5C1DC6002F019C /* CameraViewWrapper.swift in Sources */,
+				8AB728292A5EE662002F019C /* TransferData.swift in Sources */,
+				8AB728272A5E8111002F019C /* DataCalculator.swift in Sources */,
 				8AB7281F2A5C1E2F002F019C /* PoseEstimator.swift in Sources */,
 				8AB7281D2A5C1DDE002F019C /* CameraView.swift in Sources */,
 				8AE1B7F32A569837005F5F8D /* Color.swift in Sources */,
@@ -489,9 +497,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "我们将使用相机进行动作捕捉。";
+				INFOPLIST_KEY_NSMotionUsageDescription = "我们需要使用耳机来进行动作捕捉。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -519,9 +527,9 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "我们将使用相机进行动作捕捉。";
+				INFOPLIST_KEY_NSMotionUsageDescription = "我们需要使用耳机来进行动作捕捉。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

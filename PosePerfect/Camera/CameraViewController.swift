@@ -30,7 +30,9 @@ final class CameraViewController: UIViewController {
                 cameraView.previewLayer.session = cameraSession
                 cameraView.previewLayer.videoGravity = .resizeAspectFill
             }
-            cameraSession?.startRunning()
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.cameraSession?.startRunning()
+            }
         } catch {
             print(error.localizedDescription)
         }

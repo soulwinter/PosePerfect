@@ -17,36 +17,47 @@ struct DetectionView: View {
     
     var body: some View {
         VStack {
+            
+            
             ZStack {
+                // 绘制摄像机和线条
                 GeometryReader { geo in
                     CameraViewWrapper(poseEstimator: poseEstimator)
                     StickFigureView(poseEstimator: poseEstimator, size: geo.size)
                 }
-                
+
+                // 如果探测到人，就开始显示数据
                 if detected {
-                    ScrollView {
+                   
                         VStack(alignment: .leading) {
+                            Text("\(poseEstimator.poseScore)")
+                                .bold()
+                                .font(.title2)
                             ForEach(ConnectedJoints.allCases, id: \.self) { joint in
                                 if let difference = poseEstimator.poseAngleDifferences[joint] {
                                     Text("\(joint.description): \(difference)")
                                 }
                             }
+                            if let airpodsInfo = poseEstimator.AirPodsDifferences {
+                                Text("\(airpodsInfo.accelerationDifference)")
+                                Text("X:\(airpodsInfo.directionX) Y:\(airpodsInfo.directionY) Z:\(airpodsInfo.directionZ)")
+                            }
                         }
                         .padding()
-                    }
-                    Text("\(poseEstimator.poseScore)")
-                        .bold()
-                        .font(.title2)
+                    
+                    
+                   
                 }
             }
-            .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width * 1920 / 1080, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+//            .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.width * 1920 / 1080, alignment: .center)
             .onAppear {
-                
+                poseEstimator.startAirPodsUpdates()
             }
             
+            
             Button(action: {
-                if !poseEstimator.bodyParts.isEmpty {
-                    poseEstimator.standardPose = Pose(time: time, bodyParts: poseEstimator.bodyParts)
+                if !poseEstimator.bodyParts.isEmpty && (poseEstimator.AirPodsStatus == 1) {
+                    poseEstimator.standardPose = Pose(time: time, bodyParts: poseEstimator.bodyParts, AirPodsMotion: poseEstimator.motionData)
                     detected = true
                 }
                 
@@ -59,6 +70,7 @@ struct DetectionView: View {
                         .foregroundColor(Color.white)
                         .bold()
                 }
+               
                 
             }
             
