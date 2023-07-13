@@ -13,13 +13,6 @@ import CoreMotion
 struct Pose {
     var time: Float
     
-    // 面部
-    var nose: CGPoint
-    var rightEye: CGPoint
-    var leftEye: CGPoint
-    var rightEar: CGPoint
-    var leftEar: CGPoint
-    
     // 中间
     var neck: CGPoint
     var root: CGPoint
@@ -47,13 +40,6 @@ struct Pose {
     init(time: Float, bodyParts: [VNHumanBodyPoseObservation.JointName: VNRecognizedPoint], AirPodsMotion: CMDeviceMotion?) {
         self.time = time
         
-        // 面部
-        self.nose = bodyParts[.nose]?.location ?? CGPoint.zero
-        self.rightEye = bodyParts[.rightEye]?.location ?? CGPoint.zero
-        self.leftEye = bodyParts[.leftEye]?.location ?? CGPoint.zero
-        self.rightEar = bodyParts[.rightEar]?.location ?? CGPoint.zero
-        self.leftEar = bodyParts[.leftEar]?.location ?? CGPoint.zero
-        
         // 中间
         self.neck = bodyParts[.neck]?.location ?? CGPoint.zero
         self.root = bodyParts[.root]?.location ?? CGPoint.zero
@@ -79,13 +65,6 @@ struct Pose {
     }
     
 }
-
-
-
-
-
-
-
 
 
 enum ConnectedJoints: CaseIterable {

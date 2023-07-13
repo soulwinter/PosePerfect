@@ -28,14 +28,7 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
     // -1: 不支持此设备
     //  2: 停止
     
-    // 计算分数
-//    // 姿势的差距
-//    @Published var poseAngleDifferences: [ConnectedJoints : CGFloat] = [:]
-//    // 耳机分数
-//    @Published var AirPodsDifferences: AirPodsInfo?
-//    // 总分数
-//    @Published var poseScore: CGFloat = 0
-    
+    // 计算分数    
     @Published var poseInfo: BodyInfo?
     
     var subscriptions = Set<AnyCancellable>()

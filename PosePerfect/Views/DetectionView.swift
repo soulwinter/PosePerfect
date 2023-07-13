@@ -83,7 +83,9 @@ struct DetectionView: View {
             }
             
             Button(action: {
-                webSocketService.sendMessage(bodyInfoToJSON(bodyInfo: poseEstimator.poseInfo!))
+                var sendString = bodyInfoToJSON(bodyInfo: poseEstimator.poseInfo!)
+                print(sendString)
+                webSocketService.sendMessage(sendString)
 
             }) {
                 ZStack {
