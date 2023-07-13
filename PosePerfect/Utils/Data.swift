@@ -156,27 +156,82 @@ func AirPodsPoseDifference(pose1Motion: CMDeviceMotion, pose2Motion: CMDeviceMot
 
 
 
+//// 计算姿态的评分，目前默认耳机必须使用，否则不会开始
+//func calculatePoseScore(pose1: Pose, pose2: Pose) -> ([ConnectedJoints : CGFloat], AirPodsInfo) {
+//    var differences = [ConnectedJoints : CGFloat]()
+//    for group in connectedJointsGroups {
+//        let points1 = group.points(for: pose1)
+//        let points2 = group.points(for: pose2)
+//
+//
+//        let angle1 = angleBetweenThreePoints(center: points1.1, point1: points1.0, point2: points1.2)
+//        let angle2 = angleBetweenThreePoints(center: points2.1, point1: points2.0, point2: points2.2)
+//
+//
+//
+//        differences[group] = (.pi - abs(angleDifference(angle1: angle1, angle2: angle2))) / .pi
+//
+//        if pose1.AirPodsAvailable && pose2.AirPodsAvailable {
+//            // 如果耳机可用，则进行判断
+//
+//        }
+//    }
+//    return (differences, AirPodsPoseDifference(pose1Motion: pose1.AirPodsMotion!, pose2Motion: pose2.AirPodsMotion!))
+//
+//}
+
 // 计算姿态的评分，目前默认耳机必须使用，否则不会开始
-func calculatePoseScore(pose1: Pose, pose2: Pose) -> ([ConnectedJoints : CGFloat], AirPodsInfo) {
-    var differences = [ConnectedJoints : CGFloat]()
+func calculatePoseScore(pose1: Pose, pose2: Pose) -> BodyInfo {
+    // TODO: 总分还没写
+    var bodyInfo = BodyInfo(totalScore: 100,
+                            leftArm: AngleInfo(score: 0, angleDifference: 0),
+                            rightArm: AngleInfo(score: 0, angleDifference: 0),
+                            leftLeg: AngleInfo(score: 0, angleDifference: 0),
+                            rightLeg: AngleInfo(score: 0, angleDifference: 0),
+                            leftBodyAngle: AngleInfo(score: 0, angleDifference: 0),
+                            rightBodyAngle: AngleInfo(score: 0, angleDifference: 0),
+                            hipAngle: AngleInfo(score: 0, angleDifference: 0),
+                            leftUpperLimb: AngleInfo(score: 0, angleDifference: 0),
+                            rightUpperLimb: AngleInfo(score: 0, angleDifference: 0),
+                            airPodsInfo: AirPodsPoseDifference(pose1Motion: pose1.AirPodsMotion!, pose2Motion: pose2.AirPodsMotion!))
+
     for group in connectedJointsGroups {
         let points1 = group.points(for: pose1)
         let points2 = group.points(for: pose2)
         
-        
         let angle1 = angleBetweenThreePoints(center: points1.1, point1: points1.0, point2: points1.2)
         let angle2 = angleBetweenThreePoints(center: points2.1, point1: points2.0, point2: points2.2)
-        
-        differences[group] = (.pi - abs(angleDifference(angle1: angle1, angle2: angle2))) / .pi
-        
-        if pose1.AirPodsAvailable && pose2.AirPodsAvailable {
-            // 如果耳机可用，则进行判断
-            
+
+        let angleDifference = angleDifference(angle1: angle1, angle2: angle2)
+        let score = (.pi - abs(angleDifference)) / .pi
+
+        let angleInfo = AngleInfo(score: Double(score), angleDifference: Double(angleDifference))
+
+        switch group {
+        case .leftArm:
+            bodyInfo.leftArm = angleInfo
+        case .rightArm:
+            bodyInfo.rightArm = angleInfo
+        case .leftLeg:
+            bodyInfo.leftLeg = angleInfo
+        case .rightLeg:
+            bodyInfo.rightLeg = angleInfo
+        case .leftBodyAngle:
+            bodyInfo.leftBodyAngle = angleInfo
+        case .rightBodyAngle:
+            bodyInfo.rightBodyAngle = angleInfo
+        case .hipAngle:
+            bodyInfo.hipAngle = angleInfo
+        case .leftUpperLimb:
+            bodyInfo.leftUpperLimb = angleInfo
+        case .rightUpperLimb:
+            bodyInfo.rightUpperLimb = angleInfo
         }
     }
-    return (differences, AirPodsPoseDifference(pose1Motion: pose1.AirPodsMotion!, pose2Motion: pose2.AirPodsMotion!))
     
+    return bodyInfo
 }
+
 
 
 // 计算角度的差异

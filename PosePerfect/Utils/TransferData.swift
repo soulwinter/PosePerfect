@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct BodyInfo {
+struct BodyInfo: Codable {
     var totalScore: Double //总得分
 
     var leftArm: AngleInfo
@@ -24,13 +24,12 @@ struct BodyInfo {
 
 }
 
-struct AngleInfo {
+struct AngleInfo: Codable {
     var score: Double
-    var standardAngle: Double
-    var currentAngle: Double
+    var angleDifference: Double
 }
 
-struct AirPodsInfo {
+struct AirPodsInfo: Codable {
     
     var directionX: Double
     var directionY: Double
@@ -40,3 +39,18 @@ struct AirPodsInfo {
     
 }
 
+func bodyInfoToJSON(bodyInfo: BodyInfo) -> String {
+    let encoder = JSONEncoder()
+//    encoder.outputFormatting = .prettyPrinted
+
+    do {
+        let jsonData = try encoder.encode(bodyInfo)
+        if let jsonString = String(data: jsonData, encoding: .utf8) {
+            return jsonString
+        }
+    } catch {
+        print("Error encoding BodyInfo: \(error)")
+    }
+
+    return "" // or you may want to return nil or throw the error
+}

@@ -29,12 +29,14 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
     //  2: 停止
     
     // 计算分数
-    // 姿势的差距
-    @Published var poseAngleDifferences: [ConnectedJoints : CGFloat] = [:]
-    // 耳机分数
-    @Published var AirPodsDifferences: AirPodsInfo?
-    // 总分数
-    @Published var poseScore: CGFloat = 0
+//    // 姿势的差距
+//    @Published var poseAngleDifferences: [ConnectedJoints : CGFloat] = [:]
+//    // 耳机分数
+//    @Published var AirPodsDifferences: AirPodsInfo?
+//    // 总分数
+//    @Published var poseScore: CGFloat = 0
+    
+    @Published var poseInfo: BodyInfo?
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -75,13 +77,8 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
         let currentPose = Pose(time: 0, bodyParts: bodyParts, AirPodsMotion: motionData)
         // poseAngleDifferences = calculateAngleDifferences(pose1: currentPose, pose2: standardPose ?? currentPose)
         // 此版本计算的是分数，但是还有诸多问题
-        (poseAngleDifferences,AirPodsDifferences) = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
+        poseInfo = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
        
-        var total: CGFloat = 0
-        for (_, value) in poseAngleDifferences {
-            total += value
-        }
-        poseScore = total / CGFloat(poseAngleDifferences.count)
         
     }
     
