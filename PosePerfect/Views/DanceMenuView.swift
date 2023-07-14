@@ -65,12 +65,6 @@ struct DanceMenuView: View {
                             }
                     }
                    
-                        
-                    
-                        
-                    
-                
-                       
                     
                     Spacer()
                     
