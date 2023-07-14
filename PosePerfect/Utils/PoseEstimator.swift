@@ -69,13 +69,10 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
         // 如果没有数据不执行
         if !bodyParts.isEmpty && AirPodsStatus == 1 {
             let currentPose = Pose(time: 0, bodyParts: bodyParts, AirPodsMotion: motionData)
-            // poseAngleDifferences = calculateAngleDifferences(pose1: currentPose, pose2: standardPose ?? currentPose)
-            
+            // 如果数据不对，返回和自己的对比，理论上应该是 100 分
             poseInfo = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
         }
        
-       
-        
     }
     
     // 耳机开始探测

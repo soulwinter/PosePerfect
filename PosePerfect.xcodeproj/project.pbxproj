@@ -17,6 +17,7 @@
 		8AB728292A5EE662002F019C /* TransferData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB728282A5EE662002F019C /* TransferData.swift */; };
 		8AB7282C2A5F9789002F019C /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB7282B2A5F9789002F019C /* WebSocketService.swift */; };
 		8AC83C1D2A60D9E0007A1979 /* DanceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC83C1C2A60D9E0007A1979 /* DanceMapping.swift */; };
+		8AC83C1F2A61267C007A1979 /* DanceMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC83C1E2A61267C007A1979 /* DanceMenuView.swift */; };
 		8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */; };
 		8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD22A56F1F1006AAF20 /* Constants.swift */; };
 		8AE12CD52A593F81006AAF20 /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD42A593F81006AAF20 /* DetectionView.swift */; };
@@ -60,6 +61,8 @@
 		8AB7282A2A5EEF4D002F019C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8AB7282B2A5F9789002F019C /* WebSocketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketService.swift; sourceTree = "<group>"; };
 		8AC83C1C2A60D9E0007A1979 /* DanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DanceMapping.swift; sourceTree = "<group>"; };
+		8AC83C1E2A61267C007A1979 /* DanceMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DanceMenuView.swift; sourceTree = "<group>"; };
+		8AC83C202A613035007A1979 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8AE12CD22A56F1F1006AAF20 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8AE12CD42A593F81006AAF20 /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 		8AE1B7C32A569641005F5F8D /* PosePerfect */ = {
 			isa = PBXGroup;
 			children = (
+				8AC83C202A613035007A1979 /* Info.plist */,
 				8AB728172A5C1D4E002F019C /* Camera */,
 				8AE1B7F12A5697F2005F5F8D /* Utils */,
 				8AE1B7EE2A569772005F5F8D /* Views */,
@@ -179,6 +183,7 @@
 				8AE12CD42A593F81006AAF20 /* DetectionView.swift */,
 				8AC83C1C2A60D9E0007A1979 /* DanceMapping.swift */,
 				8AB728202A5C1E45002F019C /* StickFigureView.swift */,
+				8AC83C1E2A61267C007A1979 /* DanceMenuView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -335,6 +340,7 @@
 				8AB728272A5E8111002F019C /* DataCalculator.swift in Sources */,
 				8AB7281F2A5C1E2F002F019C /* PoseEstimator.swift in Sources */,
 				8AB7281D2A5C1DDE002F019C /* CameraView.swift in Sources */,
+				8AC83C1F2A61267C007A1979 /* DanceMenuView.swift in Sources */,
 				8AE1B7F32A569837005F5F8D /* Color.swift in Sources */,
 				8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */,
 				8AB7282C2A5F9789002F019C /* WebSocketService.swift in Sources */,
@@ -500,18 +506,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PosePerfect/Preview Content\"";
 				DEVELOPMENT_TEAM = YR2LEP366G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PosePerfect/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PosePerfect;
 				INFOPLIST_KEY_NSCameraUsageDescription = "我们将使用相机进行动作捕捉。";
 				INFOPLIST_KEY_NSMotionUsageDescription = "我们需要使用耳机来进行动作捕捉。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,18 +541,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PosePerfect/Preview Content\"";
 				DEVELOPMENT_TEAM = YR2LEP366G;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PosePerfect/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PosePerfect;
 				INFOPLIST_KEY_NSCameraUsageDescription = "我们将使用相机进行动作捕捉。";
 				INFOPLIST_KEY_NSMotionUsageDescription = "我们需要使用耳机来进行动作捕捉。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
