@@ -9,8 +9,62 @@ import Foundation
 import Vision
 import CoreMotion
 
+struct CodableQuaternion: Codable {
+    let x: Double
+    let y: Double
+    let z: Double
+    let w: Double
+    
+    init(quaternion: CMQuaternion) {
+        self.x = quaternion.x
+        self.y = quaternion.y
+        self.z = quaternion.z
+        self.w = quaternion.w
+    }
+    
+    init(x: Double, y: Double, z: Double, w: Double) {
+        self.x = x
+        self.y = y
+        self.z = z
+        self.w = w
+    }
+}
+
+struct CodableAcceleration: Codable {
+    let x: Double
+    let y: Double
+    let z: Double
+    
+    init(acceleration: CMAcceleration) {
+        self.x = acceleration.x
+        self.y = acceleration.y
+        self.z = acceleration.z
+    }
+    init(x: Double, y: Double, z: Double) {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+}
+
+struct CodableDeviceMotion: Codable {
+    let quaternion: CodableQuaternion
+    let userAcceleration: CodableAcceleration
+    
+    init(_ newDM: CMDeviceMotion) {
+        self.quaternion = CodableQuaternion(quaternion: newDM.attitude.quaternion)
+        self.userAcceleration = CodableAcceleration(acceleration: newDM.userAcceleration)
+    }
+    
+    init() {
+        self.quaternion = CodableQuaternion(x: -1, y: -1, z: -1, w: -1)
+        self.userAcceleration = CodableAcceleration(x: -1, y: -1, z: -1)
+    }
+}
+
+
 // Create a new pose: let pose = Pose(time: currentTime, bodyParts: poseEstimator.bodyParts)
-struct Pose {
+struct Pose: Codable {
     var time: Float
     
     // 中间
@@ -35,7 +89,8 @@ struct Pose {
     
     // 耳机数据
     var AirPodsAvailable: Bool
-    var AirPodsMotion: CMDeviceMotion?
+    var AirPodsMotion: CodableDeviceMotion?
+    
     
     init(time: Float, bodyParts: [VNHumanBodyPoseObservation.JointName: VNRecognizedPoint], AirPodsMotion: CMDeviceMotion?) {
         self.time = time
@@ -61,7 +116,11 @@ struct Pose {
         self.leftAnkle = bodyParts[.leftAnkle]?.location ?? CGPoint.zero
         
         self.AirPodsAvailable = (AirPodsMotion != nil) ? true : false
-        self.AirPodsMotion = AirPodsMotion
+        
+        if self.AirPodsAvailable {
+            self.AirPodsMotion = CodableDeviceMotion(AirPodsMotion!)
+        }
+        
     }
     
 }
@@ -113,18 +172,18 @@ func angleBetweenThreePoints(center: CGPoint, point1: CGPoint, point2: CGPoint) 
 
 
 // 计算耳机的姿态角度
-func AirPodsPoseDifference(pose1Motion: CMDeviceMotion, pose2Motion: CMDeviceMotion) -> AirPodsInfo
+func AirPodsPoseDifference(pose1Motion: CodableDeviceMotion, pose2Motion: CodableDeviceMotion) -> AirPodsInfo
 {
     // 获取两个姿态的四元数
-    let quaternion1 = pose1Motion.attitude.quaternion
-    let quaternion2 = pose2Motion.attitude.quaternion
+    let quaternion1 = pose1Motion.quaternion
+    let quaternion2 = pose2Motion.quaternion
     
     // 计算两个四元数之间的角度差异
-//    let angleDifference = cosineSimilarityBetween(quaternion1, quaternion2)
+    //    let angleDifference = cosineSimilarityBetween(quaternion1, quaternion2)
     let directionDifference = quaternionToEulerAngles(quaternion: quaternionBetween(quaternion1, quaternion2)) // 从 pose 1 到 2 需要的角度转变
     
     let userAccelerationDifference = differenceAcceleration(vector1: pose1Motion.userAcceleration, vector2: pose2Motion.userAcceleration)
-
+    
     
     return AirPodsInfo(directionX: directionDifference.0,
                        directionY: directionDifference.1,
@@ -161,6 +220,7 @@ func AirPodsPoseDifference(pose1Motion: CMDeviceMotion, pose2Motion: CMDeviceMot
 
 // 计算姿态的评分，目前默认耳机必须使用，否则不会开始
 func calculatePoseScore(pose1: Pose, pose2: Pose) -> BodyInfo {
+    var totalScore: Double = 0
     // TODO: 总分还没写
     var bodyInfo = BodyInfo(totalScore: 100,
                             leftArm: AngleInfo(score: 0, angleDifference: 0),
@@ -173,40 +233,63 @@ func calculatePoseScore(pose1: Pose, pose2: Pose) -> BodyInfo {
                             leftUpperLimb: AngleInfo(score: 0, angleDifference: 0),
                             rightUpperLimb: AngleInfo(score: 0, angleDifference: 0),
                             airPodsInfo: AirPodsPoseDifference(pose1Motion: pose1.AirPodsMotion!, pose2Motion: pose2.AirPodsMotion!))
-
+    
     for group in connectedJointsGroups {
         let points1 = group.points(for: pose1)
         let points2 = group.points(for: pose2)
         
         let angle1 = angleBetweenThreePoints(center: points1.1, point1: points1.0, point2: points1.2)
         let angle2 = angleBetweenThreePoints(center: points2.1, point1: points2.0, point2: points2.2)
-
+        
         let angleDifference = angleDifference(angle1: angle1, angle2: angle2)
         let score = (.pi - abs(angleDifference)) / .pi
-
+        
+        // 加权计算分数
         let angleInfo = AngleInfo(score: Double(score), angleDifference: Double(angleDifference))
-
+        
         switch group {
         case .leftArm:
             bodyInfo.leftArm = angleInfo
+            totalScore += score
         case .rightArm:
             bodyInfo.rightArm = angleInfo
+            totalScore += score
         case .leftLeg:
             bodyInfo.leftLeg = angleInfo
+            totalScore += score
         case .rightLeg:
             bodyInfo.rightLeg = angleInfo
+            totalScore += score
         case .leftBodyAngle:
             bodyInfo.leftBodyAngle = angleInfo
+            totalScore += score * 2
         case .rightBodyAngle:
             bodyInfo.rightBodyAngle = angleInfo
+            totalScore += score * 2
         case .hipAngle:
             bodyInfo.hipAngle = angleInfo
+            totalScore += score * 2
         case .leftUpperLimb:
             bodyInfo.leftUpperLimb = angleInfo
+            totalScore += score * 2
         case .rightUpperLimb:
             bodyInfo.rightUpperLimb = angleInfo
+            totalScore += score * 2
         }
     }
+    totalScore /= 1 + 1 + 1 + 1 + 2 + 2 + 2 + 2 + 2
+    totalScore -= abs(bodyInfo.airPodsInfo.accelerationDifference) / 10
+    
+    // 计算平方和
+    let squaredSum = bodyInfo.airPodsInfo.directionX * bodyInfo.airPodsInfo.directionX +
+    bodyInfo.airPodsInfo.directionY * bodyInfo.airPodsInfo.directionY +
+    bodyInfo.airPodsInfo.directionZ * bodyInfo.airPodsInfo.directionZ
+    totalScore -= squaredSum / 10
+    if totalScore < 0 {
+        totalScore = 0
+    }
+    
+    bodyInfo.totalScore = totalScore
     
     return bodyInfo
 }
@@ -227,4 +310,32 @@ func calculateAngleDifferences(pose1: Pose, pose2: Pose) -> [ConnectedJoints : C
         
     }
     return differences
+}
+
+
+// JSON转化方法
+func poseArraysToJSON(poses: [Pose]) -> String? {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = .prettyPrinted
+    do {
+        let data = try encoder.encode(poses)
+        return String(data: data, encoding: .utf8)
+    } catch {
+        print("Error encoding poses: \(error)")
+        return nil
+    }
+}
+
+// JSON转化回来的方法
+func poseArraysFromJSON(json: String) -> [Pose]? {
+    let decoder = JSONDecoder()
+    do {
+        if let data = json.data(using: .utf8) {
+            let poses = try decoder.decode([Pose].self, from: data)
+            return poses
+        }
+    } catch {
+        print("Error decoding poses: \(error)")
+    }
+    return nil
 }

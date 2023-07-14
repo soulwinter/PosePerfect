@@ -66,11 +66,14 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
     
     
     func estimateDance(bodyParts: [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]) {
-        
-        let currentPose = Pose(time: 0, bodyParts: bodyParts, AirPodsMotion: motionData)
-        // poseAngleDifferences = calculateAngleDifferences(pose1: currentPose, pose2: standardPose ?? currentPose)
-        // 此版本计算的是分数，但是还有诸多问题
-        poseInfo = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
+        // 如果没有数据不执行
+        if !bodyParts.isEmpty && AirPodsStatus == 1 {
+            let currentPose = Pose(time: 0, bodyParts: bodyParts, AirPodsMotion: motionData)
+            // poseAngleDifferences = calculateAngleDifferences(pose1: currentPose, pose2: standardPose ?? currentPose)
+            
+            poseInfo = calculatePoseScore(pose1: currentPose, pose2: standardPose ?? currentPose)
+        }
+       
        
         
     }

@@ -18,9 +18,8 @@ class WebSocketService: ObservableObject {
     }
     
     func connect() {
-        webSocketTask = urlSession.webSocketTask(with: URL(string: "\(Constants.webSocketDomain)/websocket/2")!)
+        webSocketTask = urlSession.webSocketTask(with: URL(string: "\(Constants.webSocketDomain)/websocket/1")!)
         webSocketTask?.resume()
-        
         receiveMessage()
     }
     
@@ -47,14 +46,12 @@ class WebSocketService: ObservableObject {
     }
     
     func sendMessage(_ content: String) {
-       
         let message = URLSessionWebSocketTask.Message.string(content)
         webSocketTask?.send(message) { error in
             if let error = error {
                 print("WebSocket couldn’t send message because: \(error)")
                 DispatchQueue.main.async {
                     self.textView = "WebSocket couldn’t send message because: \(error)"
-                    
                 }
                 
             }
