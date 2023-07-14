@@ -21,6 +21,15 @@ struct DanceMapping: View {
     @State private var timer: Timer? = nil
     
     
+    // 创建2个State属性以保存用户输入的值
+    @State private var name: String = ""
+    @State private var difficulty: String = ""
+    @State private var isSaving = false
+    
+    // 控制弹窗是否显示
+    @State private var showingAlert = false
+    
+    
     // TODO: 需要改为 Core Data
     @AppStorage("QiCaiYangGuang") var poseQCYG: String = ""
     
@@ -43,11 +52,11 @@ struct DanceMapping: View {
                             .bold()
                             .font(.title3)
                             .foregroundColor(Color.white)
-                    
-                    // 如果探测到人，就开始显示数据
-                    if detected {
                         
-                      
+                        // 如果探测到人，就开始显示数据
+                        if detected {
+                            
+                            
                             
                             VStack(alignment: .leading) {
                                 Text("\(poseEstimator.poseInfo!.totalScore)")
@@ -117,37 +126,46 @@ struct DanceMapping: View {
                     
                 }
                 
-                Button(action: {
-                    self.timer?.invalidate() // 制止任何已存在的计时器
-                    recordStarted = false
-                    if let json = poseArraysToJSON(poses: poseSequence) {
-                        self.poseQCYG = json
-                    }
-                    
-                }) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10.0)
-                        Text("停止并保存")
-                            .foregroundColor(Color.white)
-                            .bold()
-                    }
-                    .frame(height: 40)
-                    .padding(.horizontal)
-                    
+                Button("停止并保存") {
+                    isSaving.toggle()
+                }
+                .alert("请输入名称和难度", isPresented: $isSaving) {
+                    TextField("Name", text: $name)
+                        .textInputAutocapitalization(.never)
+                    TextField("Difficulty", text: $difficulty)
+                    Button("OK", action: saveData)
+                    Button("Cancel", role: .cancel) { }
+                } message: {
+                    Text("请输入动作的名称和难度等级。")
                 }
                 
                 
                 
             }
         }
-      
+        
         
     }
-}
     
-    
-    struct DanceMapping_Previews: PreviewProvider {
-        static var previews: some View {
-            DanceMapping()
+    func saveData() {
+        self.timer?.invalidate()
+        self.recordStarted = false
+        let d = DatabaseManager.shared.deleteAllData()
+        if let json = poseArraysToJSON(poses: self.poseSequence) {
+            let difficultyInt = Int(difficulty) ?? 1
+            let id = DatabaseManager.shared.insertData(name: self.name, metadata: json, difficulty: difficultyInt, length: Int(self.time))
+            print(id ?? -1)
+            
+            // TODO: 请求云端加入
         }
+        self.isSaving = false // 关闭弹窗
     }
+}
+
+
+
+struct DanceMapping_Previews: PreviewProvider {
+    static var previews: some View {
+        DanceMapping()
+    }
+}

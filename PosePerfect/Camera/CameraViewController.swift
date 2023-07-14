@@ -49,7 +49,7 @@ final class CameraViewController: UIViewController {
         guard let videoDevice = AVCaptureDevice.default(
                 .builtInWideAngleCamera,
                 for: .video,
-                position: .back) // 前后置
+                position: .front) // 前后置
         else { return }
         
         guard let deviceInput = try? AVCaptureDeviceInput(device: videoDevice)

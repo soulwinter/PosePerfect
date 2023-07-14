@@ -316,7 +316,6 @@ func calculateAngleDifferences(pose1: Pose, pose2: Pose) -> [ConnectedJoints : C
 // JSON转化方法
 func poseArraysToJSON(poses: [Pose]) -> String? {
     let encoder = JSONEncoder()
-    encoder.outputFormatting = .prettyPrinted
     do {
         let data = try encoder.encode(poses)
         return String(data: data, encoding: .utf8)

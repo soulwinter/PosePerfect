@@ -57,15 +57,12 @@ struct DanceMenuView: View {
                     }
                     .padding()
                     ScrollView {
-                        NavigationLink(destination: DetectionView()) {
-                            CustomRow(title: "七彩阳光", subTitle: "5分钟 难度小")
-                        }
-                        .padding(.horizontal)
-
-                        NavigationLink(destination: Text("太极舞")) {
-                            CustomRow(title: "太极舞", subTitle: "3分钟 难度适中")
-                        }
-                        .padding(.horizontal)
+                        ForEach(DatabaseManager.shared.getAllData(), id: \.0) { data in
+                            NavigationLink(destination: DetectionView(id: data.3)) {
+                                    CustomRow(title: data.0, subTitle: "\(data.2)秒 难度等级: \(data.1) ")
+                                }
+                                .padding(.horizontal)
+                            }
                     }
                    
                         

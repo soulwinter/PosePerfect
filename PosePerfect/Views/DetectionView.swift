@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct DetectionView: View {
+    
+    // 跳舞
+    var id: Int64
     
     @StateObject var poseEstimator = PoseEstimator()
     @StateObject var webSocketService = WebSocketService()
@@ -35,46 +39,102 @@ struct DetectionView: View {
     // 传输最好的姿势
     @State var bestBodyInfo: BodyInfo?
     
+    // 视频
+    private var player: AVPlayer?
+    @State private var playVideo = false
+    
+    var metadata: String
+    
+    
+    init(id: Int64) {
+        self.id = id
+        if id == 1 {
+            // 加载本地视频
+            guard let url = Bundle.main.url(forResource: "七彩阳光", withExtension: "mp4") else {
+                fatalError("Video not found")
+            }
+            self.player = AVPlayer(url: url)
+        }
+        self.metadata = DatabaseManager.shared.getMetadata(id: id)!
+        
+    }
+    
     var body: some View {
         ZStack {
-
+            
             // 绘制摄像机和线条
             GeometryReader { geo in
                 CameraViewWrapper(poseEstimator: poseEstimator)
                 StickFigureView(poseEstimator: poseEstimator, size: geo.size)
             }
             .ignoresSafeArea()
+            // 只有 1 个视频
+            if id == 1 {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        
+                        VideoPlayer(player: player)
+                            .onAppear() {
+                                if playVideo {
+                                    player?.play()
+                                } else {
+                                    player?.pause()
+                                }
+                            }
+                            .onDisappear() {
+                                player?.pause()
+                            }
+                            .frame(width: 852*0.3, height: 480*0.3)
+                        
+                    }
+                    Spacer()
+                        .frame(height: 60)
+                    
+                    
+                }
+            }
+            
+            
+            
             VStack {
                 
                 ZStack {
-
-                    // 如果探测到人，就开始显示数据
-                    if poseEstimator.poseInfo != nil {
-                        Text("次数： \(poseOrder)/\(poseSequence.count), \(time)/\(poseSequence[poseOrder].time)")
+                    VStack(alignment: .leading) {
+                        // , \(String(format: "%.1f", time))/\(String(format: "%.1f", poseSequence[poseOrder].time))
+                        Text("关键动作： \(poseOrder + 1) / \(poseSequence.count)")
                             .bold()
                             .font(.title2)
-                        VStack(alignment: .leading) {
+                        // 如果探测到人，就开始显示数据
+                        if poseEstimator.poseInfo != nil {
+                            
+                            
+                            
                             Text("\(poseEstimator.poseInfo!.totalScore)")
-                                
-                            Group {
-                                Text("Left Arm: \(poseEstimator.poseInfo!.leftArm.score)")
-                                Text("Right Arm: \(poseEstimator.poseInfo!.rightArm.score)")
-                                Text("Left Leg: \(poseEstimator.poseInfo!.leftLeg.score)")
-                                Text("Right Leg: \(poseEstimator.poseInfo!.rightLeg.score)")
-                                Text("Left Body Angle: \(poseEstimator.poseInfo!.leftBodyAngle.score)")
-                                Text("Right Body Angle: \(poseEstimator.poseInfo!.rightBodyAngle.score)")
-                                Text("Hip Angle: \(poseEstimator.poseInfo!.hipAngle.score)")
-                                Text("Left Upper Limb: \(poseEstimator.poseInfo!.leftUpperLimb.score)")
-                                Text("Right Upper Limb: \(poseEstimator.poseInfo!.rightUpperLimb.score)")
-                            }
+                                .bold()
+                                .font(.largeTitle)
+                            Spacer()
                             
-                            
-                            
-                            Text("AirPods Acceleration: \(poseEstimator.poseInfo!.airPodsInfo.accelerationDifference)")
-                            Text("X:\(poseEstimator.poseInfo!.airPodsInfo.directionX) Y:\(poseEstimator.poseInfo!.airPodsInfo.directionY) Z:\(poseEstimator.poseInfo!.airPodsInfo.directionZ)")
+                            //                            Group {
+                            //                                Text("Left Arm: \(poseEstimator.poseInfo!.leftArm.score)")
+                            //                                Text("Right Arm: \(poseEstimator.poseInfo!.rightArm.score)")
+                            //                                Text("Left Leg: \(poseEstimator.poseInfo!.leftLeg.score)")
+                            //                                Text("Right Leg: \(poseEstimator.poseInfo!.rightLeg.score)")
+                            //                                Text("Left Body Angle: \(poseEstimator.poseInfo!.leftBodyAngle.score)")
+                            //                                Text("Right Body Angle: \(poseEstimator.poseInfo!.rightBodyAngle.score)")
+                            //                                Text("Hip Angle: \(poseEstimator.poseInfo!.hipAngle.score)")
+                            //                                Text("Left Upper Limb: \(poseEstimator.poseInfo!.leftUpperLimb.score)")
+                            //                                Text("Right Upper Limb: \(poseEstimator.poseInfo!.rightUpperLimb.score)")
+                            //                            }
+                            //
+                            //
+                            //
+                            //                            Text("AirPods Acceleration: \(poseEstimator.poseInfo!.airPodsInfo.accelerationDifference)")
+                            //                            Text("X:\(poseEstimator.poseInfo!.airPodsInfo.directionX) Y:\(poseEstimator.poseInfo!.airPodsInfo.directionY) Z:\(poseEstimator.poseInfo!.airPodsInfo.directionZ)")
                             
                         }
-                        .padding()
+                           
                         
                     }
                     
@@ -85,12 +145,12 @@ struct DetectionView: View {
                     
                     
                     // 强制转换，不确定行不行
-                    poseSequence = poseArraysFromJSON(json: poseQCYG)!
+                    poseSequence = poseArraysFromJSON(json: metadata)!
                     poseEstimator.standardPose = poseSequence[0]
                 }
                 
                 .onReceive(detectionTimer) { _ in
-                   
+                    
                     // 在后台线程上执行任务
                     // 如果开始探测，则首先需要进行时间判断，做到第几个动作了
                     if recordStarted {
@@ -108,7 +168,7 @@ struct DetectionView: View {
                         if time > poseSequence[poseOrder].time + 1 && poseOrder < poseSequence.count - 1 && poseEstimator.poseInfo != nil {
                             poseOrder += 1
                             poseEstimator.standardPose = poseSequence[poseOrder]
-
+                            
                             if bestBodyInfo != nil {
                                 let sendString = bodyInfoToJSON(bodyInfo: bestBodyInfo!)
                                 print(sendString)
@@ -139,6 +199,10 @@ struct DetectionView: View {
                         if (poseEstimator.AirPodsStatus != 1) {
                             return
                         }
+                        if (id == 1) {
+                            player?.play()
+                        }
+                        
                         recordStarted = true
                         // 连接
                         webSocketService.connect()
@@ -160,20 +224,14 @@ struct DetectionView: View {
                     .frame(height: 50)
                     
                 }
-
+                
             }
         }
         
-
+        
     }
     
 }
 
 
 
-
-struct DetectionView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetectionView()
-    }
-}

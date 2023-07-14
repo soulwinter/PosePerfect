@@ -18,6 +18,9 @@
 		8AB7282C2A5F9789002F019C /* WebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB7282B2A5F9789002F019C /* WebSocketService.swift */; };
 		8AC83C1D2A60D9E0007A1979 /* DanceMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC83C1C2A60D9E0007A1979 /* DanceMapping.swift */; };
 		8AC83C1F2A61267C007A1979 /* DanceMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC83C1E2A61267C007A1979 /* DanceMenuView.swift */; };
+		8AC83C232A616D44007A1979 /* 七彩阳光.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 8AC83C222A616D44007A1979 /* 七彩阳光.mp4 */; };
+		8AC83C262A6174E8007A1979 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8AC83C252A6174E8007A1979 /* SQLite */; };
+		8AC83C282A61750D007A1979 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC83C272A61750D007A1979 /* Database.swift */; };
 		8AE12CD12A56F1C4006AAF20 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */; };
 		8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD22A56F1F1006AAF20 /* Constants.swift */; };
 		8AE12CD52A593F81006AAF20 /* DetectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE12CD42A593F81006AAF20 /* DetectionView.swift */; };
@@ -63,6 +66,8 @@
 		8AC83C1C2A60D9E0007A1979 /* DanceMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DanceMapping.swift; sourceTree = "<group>"; };
 		8AC83C1E2A61267C007A1979 /* DanceMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DanceMenuView.swift; sourceTree = "<group>"; };
 		8AC83C202A613035007A1979 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8AC83C222A616D44007A1979 /* 七彩阳光.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "七彩阳光.mp4"; path = "../../../../七彩阳光.mp4"; sourceTree = "<group>"; };
+		8AC83C272A61750D007A1979 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		8AE12CD02A56F1C4006AAF20 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8AE12CD22A56F1F1006AAF20 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		8AE12CD42A593F81006AAF20 /* DetectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionView.swift; sourceTree = "<group>"; };
@@ -85,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AC83C262A6174E8007A1979 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,6 +121,14 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
+		8AC83C212A616D35007A1979 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8AC83C222A616D44007A1979 /* 七彩阳光.mp4 */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		8AE1B7B82A569641005F5F8D = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +153,7 @@
 		8AE1B7C32A569641005F5F8D /* PosePerfect */ = {
 			isa = PBXGroup;
 			children = (
+				8AC83C212A616D35007A1979 /* Resources */,
 				8AC83C202A613035007A1979 /* Info.plist */,
 				8AB728172A5C1D4E002F019C /* Camera */,
 				8AE1B7F12A5697F2005F5F8D /* Utils */,
@@ -199,6 +214,7 @@
 				8AB728262A5E8111002F019C /* DataCalculator.swift */,
 				8AB728282A5EE662002F019C /* TransferData.swift */,
 				8AB7282B2A5F9789002F019C /* WebSocketService.swift */,
+				8AC83C272A61750D007A1979 /* Database.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -219,6 +235,9 @@
 			dependencies = (
 			);
 			name = PosePerfect;
+			packageProductDependencies = (
+				8AC83C252A6174E8007A1979 /* SQLite */,
+			);
 			productName = PosePerfect;
 			productReference = 8AE1B7C12A569641005F5F8D /* PosePerfect.app */;
 			productType = "com.apple.product-type.application";
@@ -291,6 +310,9 @@
 				Base,
 			);
 			mainGroup = 8AE1B7B82A569641005F5F8D;
+			packageReferences = (
+				8AC83C242A6174E8007A1979 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+			);
 			productRefGroup = 8AE1B7C22A569641005F5F8D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -309,6 +331,7 @@
 			files = (
 				8AE1B7CC2A569643005F5F8D /* Preview Assets.xcassets in Resources */,
 				8AE1B7C92A569643005F5F8D /* Assets.xcassets in Resources */,
+				8AC83C232A616D44007A1979 /* 七彩阳光.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,6 +373,7 @@
 				8AB728192A5C1DAF002F019C /* CameraViewController.swift in Sources */,
 				8AE1B7C52A569641005F5F8D /* PosePerfectApp.swift in Sources */,
 				8AE12CD32A56F1F1006AAF20 /* Constants.swift in Sources */,
+				8AC83C282A61750D007A1979 /* Database.swift in Sources */,
 				8AC83C1D2A60D9E0007A1979 /* DanceMapping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -687,6 +711,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8AC83C242A6174E8007A1979 /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.14.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8AC83C252A6174E8007A1979 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8AC83C242A6174E8007A1979 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8AE1B7B92A569641005F5F8D /* Project object */;
 }
