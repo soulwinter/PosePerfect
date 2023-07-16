@@ -86,7 +86,7 @@ struct DetectionView: View {
                             .onDisappear() {
                                 player?.pause()
                             }
-                            .frame(width: 852*0.3, height: 480*0.3)
+                            .frame(width: 852*0.6, height: 480*0.6)
                         
                     }
                     Spacer()
@@ -103,17 +103,28 @@ struct DetectionView: View {
                 ZStack {
                     VStack(alignment: .leading) {
                         // , \(String(format: "%.1f", time))/\(String(format: "%.1f", poseSequence[poseOrder].time))
-                        Text("关键动作： \(poseOrder + 1) / \(poseSequence.count)")
-                            .bold()
-                            .font(.title2)
-                        // 如果探测到人，就开始显示数据
+//                        Text("动作： \(poseOrder + 1) / \(poseSequence.count)")
                         if poseEstimator.poseInfo != nil {
-                            
-                            
-                            
-                            Text("\(poseEstimator.poseInfo!.totalScore)")
-                                .bold()
-                                .font(.largeTitle)
+                            VStack(alignment: .leading) {
+                                Text("\(formatTime(time: time))")
+                                    .bold()
+                                    .font(.title2)
+                                    .monospacedDigit()
+                                    .foregroundColor(Color.white)
+                                    
+                                // 如果探测到人，就开始显示数据
+                                
+                                    
+                                    
+                                    
+                                    Text("\( String(format: "%.1f", poseEstimator.poseInfo!.totalScore))")
+                                        .bold()
+                                        .font(.system(size: 50, weight: .regular, design: .rounded))
+                                        .foregroundColor(Color.white)
+                                        .monospacedDigit()
+                            }
+                      
+                                
                             Spacer()
                             
                             //                            Group {
@@ -148,6 +159,12 @@ struct DetectionView: View {
                     poseSequence = poseArraysFromJSON(json: metadata)!
                     poseEstimator.standardPose = poseSequence[0]
                 }
+                .onDisappear {
+                    webSocketService.disconnect()
+                    self.player!.seek(to: CMTime.zero)
+                    self.player!.pause()
+                    
+                }
                 
                 .onReceive(detectionTimer) { _ in
                     
@@ -156,7 +173,8 @@ struct DetectionView: View {
                     if recordStarted {
                         
                         // 前后一秒内做的动作都有效
-                        if poseEstimator.poseInfo != nil && abs(time - poseSequence[poseOrder].time) < 1 {
+                        let timeThreshold: Float = 0.3
+                        if poseEstimator.poseInfo != nil && abs(time - poseSequence[poseOrder].time) < timeThreshold {
                             if poseEstimator.poseInfo!.totalScore > bestScore {
                                 bestBodyInfo = poseEstimator.poseInfo
                                 bestScore = poseEstimator.poseInfo!.totalScore
@@ -165,7 +183,7 @@ struct DetectionView: View {
                         
                         
                         // 时间超过了要做的动作
-                        if time > poseSequence[poseOrder].time + 1 && poseOrder < poseSequence.count - 1 && poseEstimator.poseInfo != nil {
+                        if time > poseSequence[poseOrder].time + timeThreshold && poseOrder < poseSequence.count - 1 && poseEstimator.poseInfo != nil {
                             poseOrder += 1
                             poseEstimator.standardPose = poseSequence[poseOrder]
                             
@@ -205,7 +223,7 @@ struct DetectionView: View {
                         
                         recordStarted = true
                         // 连接
-                        webSocketService.connect()
+                        webSocketService.connect(id: Int(id))
                         // 开始新的计时器
                         self.timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
                             time += 0.1

@@ -80,3 +80,13 @@ func differenceAcceleration(vector1: CodableAcceleration, vector2: CodableAccele
 
     return magnitude1 - magnitude2
 }
+
+
+func formatTime(time: Float) -> String {
+    let totalSeconds = Int(time)
+    let minutes = totalSeconds / 60
+    let seconds = totalSeconds % 60
+    let fractionOfSecond = Int((time - Float(totalSeconds)) * 10)
+
+    return String(format: "%02d:%02d.%d", minutes, seconds, fractionOfSecond)
+}

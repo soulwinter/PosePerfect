@@ -242,7 +242,9 @@ func calculatePoseScore(pose1: Pose, pose2: Pose) -> BodyInfo {
         let angle2 = angleBetweenThreePoints(center: points2.1, point1: points2.0, point2: points2.2)
         
         let angleDifference = angleDifference(angle1: angle1, angle2: angle2)
-        let score = (.pi - abs(angleDifference)) / .pi
+        // (.pi - abs(angleDifference)) / .pi
+        let score = roundedNumber(num: pow((Double.pi - abs(angleDifference)) / Double.pi, 2)*100)
+        print(score)
         
         // 加权计算分数
         let angleInfo = AngleInfo(score: Double(score), angleDifference: Double(angleDifference))
@@ -289,12 +291,14 @@ func calculatePoseScore(pose1: Pose, pose2: Pose) -> BodyInfo {
         totalScore = 0
     }
     
-    bodyInfo.totalScore = totalScore
+    bodyInfo.totalScore = roundedNumber(num: totalScore)
     
     return bodyInfo
 }
 
-
+func roundedNumber(num: Double) -> Double {
+        return Double(round(100*num)/100)
+    }
 
 // 计算角度的差异
 func calculateAngleDifferences(pose1: Pose, pose2: Pose) -> [ConnectedJoints : CGFloat] {

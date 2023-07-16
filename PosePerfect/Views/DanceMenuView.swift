@@ -11,6 +11,7 @@ struct CustomRow: View {
     var title: String
     var subTitle: String
     
+    
 
     var body: some View {
         
@@ -36,11 +37,14 @@ struct CustomRow: View {
                 
             )
             .padding(.bottom, 5)
+            
     }
 }
 
 struct DanceMenuView: View {
     @State var userName: String?
+    @State var data: [(String, Int, Int, Int64)] = DatabaseManager.shared.getAllData()
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -57,12 +61,16 @@ struct DanceMenuView: View {
                     }
                     .padding()
                     ScrollView {
-                        ForEach(DatabaseManager.shared.getAllData(), id: \.0) { data in
+                        ForEach(data, id: \.0) { data in
                             NavigationLink(destination: DetectionView(id: data.3)) {
                                     CustomRow(title: data.0, subTitle: "\(data.2)秒 难度等级: \(data.1) ")
                                 }
                                 .padding(.horizontal)
                             }
+                    }
+                    .onAppear {
+//                        DatabaseManager.shared.deleteAllData()
+                        data = DatabaseManager.shared.getAllData()
                     }
                    
                     

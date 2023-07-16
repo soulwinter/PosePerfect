@@ -17,8 +17,8 @@ class WebSocketService: ObservableObject {
         self.urlSession = URLSession(configuration: .default)
     }
     
-    func connect() {
-        webSocketTask = urlSession.webSocketTask(with: URL(string: "\(Constants.webSocketDomain)/websocket/13/1")!)
+    func connect(id: Int) {
+        webSocketTask = urlSession.webSocketTask(with: URL(string: "\(Constants.webSocketDomain)/websocket/13/\(id)")!)
         webSocketTask?.resume()
         receiveMessage()
     }

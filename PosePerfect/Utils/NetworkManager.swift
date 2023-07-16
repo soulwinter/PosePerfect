@@ -86,10 +86,6 @@ class NetworkManager {
         postRequest(url: url, completion: completion)
     }
     
-    
-    
-
-    
     struct UserData: Decodable {
         let id: Int
         let nickname: String
