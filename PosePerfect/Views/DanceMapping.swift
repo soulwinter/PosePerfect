@@ -154,7 +154,7 @@ struct DanceMapping: View {
         if let json = poseArraysToJSON(poses: self.poseSequence) {
             let difficultyInt = Int(difficulty) ?? 1
             let id = DatabaseManager.shared.insertData(name: self.name, metadata: json, difficulty: difficultyInt, length: Int((poseSequence.last?.time ?? 0) + 1))
-            print(id ?? -1)
+           
             
             // TODO: 请求云端加入
         }
